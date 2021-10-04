@@ -15,46 +15,44 @@ public class NormalEquation {
     }
     public void regresionMultiple(){
         double[][] xtx = MultiplicarMa(xt,x);
-        double[][] Iverxtx = IversaMa(xtx);
+        double[][] Iverxtx = IversaMatrizGj(xtx);
         double[][] xty =  MultiplicarMa(xt,y);
         betas = MultiplicarMa(Iverxtx, xty);
         System.out.println("b0 = "+betas[0][0]);
         System.out.println("b1 = "+betas[1][0]);
         System.out.println("b2 = "+betas[2][0]);
     }
-    private static double[][] Cofactor(double[][] matriz, int fila, int columna){
-        double[][] resutado = new double[matriz.length-1][matriz[0].length-1];
-        int f=0, c=0;
+    public static double[][] identidad(int n){
+        double[][] identidad = new double[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                identidad[i][j]=0;
+            }
+            identidad[i][i]=1;
+        }
+        return identidad;
+    }
+    private static double[][] IversaMatrizGj(double[][] matriz){
+        double[][] identidad = identidad(matriz.length);
+        double pivote;
+        double aux;
         for (int i = 0; i <matriz.length ; i++) {
-            if (i != fila) {
-                c=0;
-                for (int j = 0; j < matriz[0].length; j++) {
-                    if (j!=columna){
-                        resutado[f][c]= matriz[i][j];
-                        c++;
+            pivote = matriz[i][i];
+            for (int j = 0; j < matriz.length; j++) { //renglones
+                matriz[i][j] = matriz[i][j] / pivote;
+                identidad[i][j] = identidad[i][j] / pivote;
+            }
+            for (int j = 0; j <matriz.length ; j++) {   //filas
+                if (i!=j){
+                    aux = matriz[j][i];
+                    for (int k = 0; k < matriz.length; k++) {
+                        matriz[j][k] = matriz[j][k] -aux*matriz[i][k];
+                        identidad[j][k] = identidad[j][k] - aux*identidad[i][k];
                     }
                 }
-                f++;
             }
         }
-        return resutado;
-    }
-    private static double[][] IversaMa(double[][] matriz){
-        double[][] resutado = new double[matriz.length][matriz[0].length];
-        double determinate = determinante(matriz);
-        double signo  =1;
-        for (int i = 0; i < matriz.length; i++) { //filas
-            for (int j = 0; j < matriz[0].length ; j++) { //columnas
-                double[][] temp = Cofactor(matriz, i, j);
-                resutado[i][j]= (((temp[0][0]* temp[1][1]) -(temp[1][0]* temp[0][1]))/determinate) *signo;
-                signo = signo *-1;
-            }
-        }
-        return resutado;
-    }
-    private static double determinante(double[][] matriz){
-        return (matriz[0][0] * matriz[1][1] * matriz[2][2] + matriz[2][0] * matriz[0][1] * matriz[1][2] +matriz[0][2] * matriz[1][0] * matriz[2][1])
-                - (matriz[2][0] * matriz[1][1]* matriz[0][2] + matriz[0][0]* matriz[1][2]*matriz[2][1] + matriz[0][1]*matriz[1][0]*matriz[2][2]);
+        return identidad;
     }
     private static double[][] MultiplicarMa(double[][] matriz1, double[][] matriz2){
         double[][] resutado = new double[matriz1.length][matriz2[1].length];
@@ -75,7 +73,7 @@ public class NormalEquation {
     private static double[][] getY(double[][] matriz){
         double[][] y= new double[matriz.length][1];
         for (int i = 0; i < matriz.length; i++) {
-            y[i][0]= matriz[i][3];
+            y[i][0]= matriz[i][(matriz[0].length-1)];
         }
         return y;
     }
