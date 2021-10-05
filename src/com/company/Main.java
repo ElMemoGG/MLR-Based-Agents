@@ -21,9 +21,13 @@ public class Main {
                 {15,71.1,32.1,321.7},
                 {16,77,32.5,330.7},
                 {17,77.8,32.9,349}};
-        NormalEquation noc = new NormalEquation(dataset);
-        noc.regresionMultiple();
 
+        NormalEquation noc = new NormalEquation(dataset);
+        noc.regresionMultiple(80.5, 33.7);
+
+        double[][] dtbenet = new  double[][]{{651,23},{762,26},{856,30},{1063,34},{1190,43},{1298,48},{1421,52},{1440,57},{1518,58}};
+        GradientDescent noc2 = new GradientDescent(dtbenet);
+        noc2.getGradinte();
 
 
     }

@@ -13,16 +13,21 @@ public class NormalEquation {
         xt =TranspuestaMa(x);
         y = getY(dataset);
     }
-    public void regresionMultiple(){
+    public void regresionMultiple(double x1, double x2){
         double[][] xtx = MultiplicarMa(xt,x);
         double[][] Iverxtx = IversaMatrizGj(xtx);
         double[][] xty =  MultiplicarMa(xt,y);
         betas = MultiplicarMa(Iverxtx, xty);
-        System.out.println("b0 = "+betas[0][0]);
-        System.out.println("b1 = "+betas[1][0]);
-        System.out.println("b2 = "+betas[2][0]);
+
+        System.out.println("y = "+betas[0][0] + " + " + betas[1][0] +"*"+x1+" + " + betas[2][0] +"*"+x2+ " " );
+        System.out.println("y= "+  (betas[0][0]+betas[1][0]*x1+betas[2][0]*x2));
+
+        //System.out.println("b0 = "+betas[0][0]);
+        //System.out.println("b1 = "+betas[1][0]);
+        //System.out.println("b2 = "+betas[2][0]);
+
     }
-    public static double[][] identidad(int n){
+    private static double[][] identidad(int n){
         double[][] identidad = new double[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -34,20 +39,20 @@ public class NormalEquation {
     }
     private static double[][] IversaMatrizGj(double[][] matriz){
         double[][] identidad = identidad(matriz.length);
-        double pivote;
-        double aux;
+        double linea;
+        double operacion;
         for (int i = 0; i <matriz.length ; i++) {
-            pivote = matriz[i][i];
+            linea = matriz[i][i];
             for (int j = 0; j < matriz.length; j++) { //renglones
-                matriz[i][j] = matriz[i][j] / pivote;
-                identidad[i][j] = identidad[i][j] / pivote;
+                matriz[i][j] = matriz[i][j] / linea;
+                identidad[i][j] = identidad[i][j] / linea;
             }
             for (int j = 0; j <matriz.length ; j++) {   //filas
                 if (i!=j){
-                    aux = matriz[j][i];
+                    operacion = matriz[j][i];
                     for (int k = 0; k < matriz.length; k++) {
-                        matriz[j][k] = matriz[j][k] -aux*matriz[i][k];
-                        identidad[j][k] = identidad[j][k] - aux*identidad[i][k];
+                        matriz[j][k] = matriz[j][k] -operacion*matriz[i][k];
+                        identidad[j][k] = identidad[j][k] - operacion*identidad[i][k];
                     }
                 }
             }
