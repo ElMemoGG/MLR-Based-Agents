@@ -18,13 +18,10 @@ public class NormalEquation {
         double[][] Iverxtx = IversaMatrizGj(xtx);
         double[][] xty =  MultiplicarMa(xt,y);
         betas = MultiplicarMa(Iverxtx, xty);
+        System.out.println("\n\nMLR-----------");
+        System.out.println("y = "+betas[0][0] + " + " + betas[1][0] +"("+x1+") + " + betas[2][0] +"("+x2+ ") " );
+        System.out.println("y = "+  (betas[0][0]+betas[1][0]*x1+betas[2][0]*x2));
 
-        System.out.println("y = "+betas[0][0] + " + " + betas[1][0] +"*"+x1+" + " + betas[2][0] +"*"+x2+ " " );
-        System.out.println("y= "+  (betas[0][0]+betas[1][0]*x1+betas[2][0]*x2));
-
-        //System.out.println("b0 = "+betas[0][0]);
-        //System.out.println("b1 = "+betas[1][0]);
-        //System.out.println("b2 = "+betas[2][0]);
 
     }
     private static double[][] identidad(int n){
